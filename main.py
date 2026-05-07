@@ -30,6 +30,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict
 
 from fastapi import FastAPI, HTTPException
+import httpx
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -126,12 +127,23 @@ async def api_live() -> Dict[str, Any]:
         data = await scrape_speedhive()
         return data
     except HTTPException as exc:
-        # Playwright/HTTP error occurred; return a safe JSON object
-        return {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "raw_text": "",
-            "error": exc.detail,
-        }
+        # Playwright/HTTP error occurred; attempt a fallback using a simple HTTP client.
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(SPEEDHIVE_URL, timeout=30.0)
+                resp.raise_for_status()
+                # Return the raw HTML of the page as a fallback.
+                return {
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "raw_text": resp.text,
+                }
+        except Exception as fallback_exc:
+            # Both Playwright and HTTP fallback failed; return combined error message.
+            return {
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "raw_text": "",
+                "error": f"{exc.detail} | fallback error: {fallback_exc}",
+            }
     except Exception as exc:
         # Catch any other unexpected errors
         return {
