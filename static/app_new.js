@@ -25,16 +25,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const driver = document.getElementById("driver-input").value;
     const lastLap = document.getElementById("lastlap-input").value;
 
-    document.getElementById("display-lap").textContent = `Lap: ${lap || "N/A"}`;
-    document.getElementById("display-position").textContent = `Position: ${pos || "N/A"}`;
-    document.getElementById("display-gap").textContent = `Gap to P1: ${gap || "N/A"}`;
-    document.getElementById("display-stint").textContent = `Stint #: ${stint || "N/A"}`;
-    document.getElementById("display-driver").textContent = `Driver: ${driver || "N/A"}`;
-    document.getElementById("display-lastlap").textContent = `Last Lap: ${lastLap || "N/A"}`;
+    const displayLapEl = document.getElementById("display-lap");
+    if (displayLapEl) {
+      displayLapEl.textContent = `Lap: ${lap || "N/A"}`;
+    }
+    const displayPosEl = document.getElementById("display-position");
+    if (displayPosEl) {
+      displayPosEl.textContent = `Position: ${pos || "N/A"}`;
+    }
+    const displayGapEl = document.getElementById("display-gap");
+    if (displayGapEl) {
+      displayGapEl.textContent = `Gap to P1: ${gap || "N/A"}`;
+    }
+    const displayStintEl = document.getElementById("display-stint");
+    if (displayStintEl) {
+      displayStintEl.textContent = `Stint #: ${stint || "N/A"}`;
+    }
+    const displayDriverEl = document.getElementById("display-driver");
+    if (displayDriverEl) {
+      displayDriverEl.textContent = `Driver: ${driver || "N/A"}`;
+    }
+    const displayLastLapEl = document.getElementById("display-lastlap");
+    if (displayLastLapEl) {
+      displayLastLapEl.textContent = `Last Lap: ${lastLap || "N/A"}`;
+    }
 
     // Update status with timestamp for traceability
     const now = new Date();
-    document.getElementById("status").textContent = `Last updated: ${now.toLocaleString()}`;
+    const statusEl = document.getElementById("status");
+    if (statusEl) {
+      statusEl.textContent = `Last updated: ${now.toLocaleString()}`;
+    }
   }
 
   // Attach event listener to the update button
