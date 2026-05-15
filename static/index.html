@@ -7,56 +7,55 @@
     <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-    <h1>D24 Strategy Dashboard</h1>
+    <h1>Stint Timer Tool</h1>
     <!-- Status indicator -->
-    <div id="status">Dashboard ready</div>
+    <div id="status">Ready</div>
 
-    <!-- Manual input section for race metrics -->
-    <div class="manual-inputs">
+    <!-- Driver and configuration setup -->
+    <div id="drivers-setup">
         <label>
-            Current Lap:
-            <input id="lap-input" type="number" min="0" step="1" />
+            Drivers (comma separated):
+            <input id="drivers-input" type="text" placeholder="e.g. Rich, Tom L, Tom, Alex, Dunc, Jamie, Matt"/>
         </label>
         <label>
-            Position:
-            <input id="position-input" type="number" min="1" step="1" />
+            Single stint length (minutes):
+            <input id="single-duration-input" type="number" min="1" step="1" value="45"/>
         </label>
         <label>
-            Gap to P1:
-            <input id="gap-input" type="text" placeholder="e.g. +1 lap or +30s" />
+            Double stint length (minutes):
+            <input id="double-duration-input" type="number" min="1" step="1" value="90"/>
         </label>
         <label>
-            Stint #:
-            <input id="stint-input" type="number" min="1" step="1" />
+            Pit window opens (minutes before end):
+            <input id="pit-offset-input" type="number" min="0" step="1" value="5"/>
         </label>
-        <label>
-            Driver:
-            <input id="driver-input" type="text" placeholder="Driver name" />
-        </label>
-        <label>
-            Last Lap Time:
-            <input id="lastlap-input" type="text" placeholder="e.g. 75.34s" />
-        </label>
-        <button id="update-btn">Update</button>
+        <button id="load-drivers-btn">Load Drivers</button>
     </div>
 
-    <!-- Display section for current metrics -->
-    <div class="display">
-        <h2>Current Metrics</h2>
-        <p id="display-lap">Lap: N/A</p>
-        <p id="display-position">Position: N/A</p>
-        <p id="display-gap">Gap to P1: N/A</p>
-        <p id="display-stint">Stint #: N/A</p>
-        <p id="display-driver">Driver: N/A</p>
-        <p id="display-lastlap">Last Lap: N/A</p>
+    <!-- Stint setup section, hidden until drivers loaded -->
+    <div id="stint-setup" style="display:none;">
+        <h2>Driver Rotation</h2>
+        <p>Current Driver: <span id="current-driver">N/A</span></p>
+        <p>Next Driver: <span id="next-driver">N/A</span></p>
+        <p>Reserve Driver: <span id="reserve-driver">N/A</span></p>
+        <label>
+            Stint type:
+            <input type="radio" name="stint-type" value="single" checked> Single
+            <input type="radio" name="stint-type" value="double"> Double
+        </label>
+        <button id="start-btn">Start Stint</button>
+        <button id="end-btn" disabled>End Stint</button>
     </div>
 
-    <!--
-      Use the versioned script ``app_new.js`` to ensure that browsers do not
-      cache an old copy of the front‑end logic. If you make further changes,
-      increment the filename or append a query string to bust caches.
-    -->
-    <!-- Append a version query string to the script to bust browser caches -->
-    <script src="/static/app_new.js?v=manual"></script>
+    <!-- Timer display section -->
+    <div id="timer-display" style="display:none;">
+        <h2>Stint Timing</h2>
+        <p>Time In: <span id="time-in">00:00:00</span></p>
+        <p>Time Left: <span id="time-left">00:00:00</span></p>
+        <p>Pit Window Opens In: <span id="pit-window">--:--:--</span></p>
+    </div>
+
+    <!-- Include the new stint timer script with a version query string -->
+    <script src="/static/stint_timer.js?v=1"></script>
 </body>
 </html>
